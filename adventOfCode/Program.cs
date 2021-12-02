@@ -125,9 +125,9 @@ namespace adventOfCode
 
 		public static int ProductOfHorizontalAndDepthPositionWithAim(List<string> lines)
 		{
-			int TotalDepth = 0;
-			int TotalHorizontal = 0;
-			int totalAim = 0;
+			var TotalDepth = 0;
+			var TotalHorizontal = 0;
+			var totalAim = 0;
 
 			for (var index = 0; index < lines.Count; index++)
 			{
