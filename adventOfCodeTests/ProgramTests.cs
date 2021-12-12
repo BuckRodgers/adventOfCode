@@ -128,7 +128,29 @@ namespace adventOfCode.Tests
 		public void PlayBingoTest()
 		{
 			int playBingo = Program.PlayBingo(input4);
-			if(playBingo != 1924)
+			if (playBingo != 1924)
+				Assert.Fail();
+		}
+
+		private List<string> input5 = new List<string>()
+		{
+			"0,9 -> 5,9",
+			"8,0 -> 0,8",
+			"9,4 -> 3,4",
+			"2,2 -> 2,1",
+			"7,0 -> 7,4",
+			"6,4 -> 2,0",
+			"0,9 -> 2,9",
+			"3,4 -> 1,4",
+			"0,0 -> 8,8",
+			"5,5 -> 8,2"
+		};
+
+		[TestMethod()]
+		public void GetNumberOfPointsWhereAtLeast2LinesOverLapTest()
+		{
+			var result = Program.GetNumberOfPointsWhereAtLeast2LinesOverLap(input5);
+			if(result!= 5)
 				Assert.Fail();
 		}
 	}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 
 namespace adventOfCode
@@ -14,8 +15,10 @@ namespace adventOfCode
 			//Day1();
 			//Day2();
 			//Day3();
-			Day4();
+			//Day4();
+			Day5();
 		}
+
 
 		public static void Day1()
 		{
@@ -74,10 +77,10 @@ namespace adventOfCode
 		public static void Day2()
 		{
 			var lines = File.ReadAllLines(@"C:\Users\rjl\Documents\adventofcode\input2.txt").ToList();
-			int increasesCount = ProductOfHorizontalAndDepthPosition(lines);
-			Console.WriteLine(increasesCount);
-			increasesCount = ProductOfHorizontalAndDepthPositionWithAim(lines);
-			Console.WriteLine(increasesCount);
+			int result = ProductOfHorizontalAndDepthPosition(lines);
+			Console.WriteLine(result);
+			result = ProductOfHorizontalAndDepthPositionWithAim(lines);
+			Console.WriteLine(result);
 		}
 
 		enum command
@@ -173,8 +176,8 @@ namespace adventOfCode
 		public static void Day3()
 		{
 			var lines = File.ReadAllLines(@"C:\Users\rjl\Documents\adventofcode\input3.txt").ToList();
-			int increasesCount = GetLifeSuppportRating(lines);
-			Console.WriteLine(increasesCount);
+			int result = GetLifeSuppportRating(lines);
+			Console.WriteLine(result);
 			//increasesCount = GetGammaRate2(lines);
 			//Console.WriteLine(increasesCount);
 		}
@@ -308,8 +311,8 @@ namespace adventOfCode
 		public static void Day4()
 		{
 			var lines = File.ReadAllLines(@"C:\Users\rjl\Documents\adventofcode\input4.txt").ToList();
-			int increasesCount = PlayBingo(lines);
-			Console.WriteLine(increasesCount);
+			int result = PlayBingo(lines);
+			Console.WriteLine(result);
 		}
 
 		public static int PlayBingo(List<string> lines)
@@ -460,6 +463,136 @@ namespace adventOfCode
 			if (firstLine == null) return new int[0];
 			string[] strings = firstLine.Split(',');
 			return strings.Select(int.Parse).ToArray();
+		}
+
+
+		public static void Day5()
+		{
+			var lines = File.ReadAllLines(@"C:\Users\rjl\Documents\adventofcode\input5.txt").ToList();
+			int increasesCount = GetNumberOfPointsWhereAtLeast2LinesOverLap(lines);
+			Console.WriteLine(increasesCount);
+		}
+
+		class Vector2D
+		{
+			public int x, y;
+		}
+
+		class HydroThermalVentsCoordinates
+		{
+			public Vector2D MinCoordinates = new Vector2D(){x = int.MaxValue, y= int.MaxValue};
+			public Vector2D MaxCoordinates = new Vector2D(){x = int.MinValue, y = int.MinValue };
+
+			public List<Vector2D[]> HydrothermalVentsCoordinates = new List<Vector2D[]>();
+		}
+		public static int GetNumberOfPointsWhereAtLeast2LinesOverLap(List<string> lines)
+		{
+			HydroThermalVentsCoordinates coordintates = GetHydroThermalCoordinates(lines);
+			int[,] map = new int[coordintates.MaxCoordinates.x +1 , coordintates.MaxCoordinates.y +1]; 
+			foreach (Vector2D[] coordinates in coordintates.HydrothermalVentsCoordinates)
+			{
+				var from2D = coordinates[0];
+				var to2D = coordinates[1];
+
+				if (to2D.x != from2D.x && from2D.y != to2D.y) continue;
+
+				AddLineToMap(from2D, to2D, map);
+
+			}
+
+			var overlapCount = 0;
+			for (int i = coordintates.MinCoordinates.x; i < map.GetLength(0); i++)
+			{
+				for (int j = coordintates.MinCoordinates.y; j < map.GetLength(1); j++)
+				{
+					if (map[i, j] > 1)
+						overlapCount++;
+				}
+			}
+
+
+			return overlapCount;
+		}
+
+		private static void AddLineToMap(Vector2D from2D, Vector2D to2D, int[,] map)
+		{
+			var fromX = from2D.x;
+			var fromY = from2D.y;
+			var toX = to2D.x;
+			var toY = to2D.y;
+
+
+			if (from2D.x > to2D.x)
+			{
+				toX = fromX;
+				fromX = to2D.x;
+			}
+
+			if (from2D.y > to2D.y)
+			{
+				toY = fromY;
+				fromY = to2D.y;
+			}
+
+			for (int i = fromX; i <= toX; i++)
+			{
+				for (int j = fromY; j <= toY; j++)
+				{
+					map[i, j] = map[i,j]+1;
+				}
+			}
+		}
+
+		private static HydroThermalVentsCoordinates GetHydroThermalCoordinates(List<string> lines)
+		{
+			HydroThermalVentsCoordinates coordinates = new HydroThermalVentsCoordinates();
+			foreach (string line in lines)
+			{
+				var lineSplit = line.Split("->");
+
+				string from = lineSplit[0];
+				string to = lineSplit[1];
+				List<string> fromSplit = @from.Split(',').Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
+				List<string> toSplit = to.Split(',').Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
+
+				Vector2D from2D = GetCoordinate(fromSplit);
+				Vector2D to2D = GetCoordinate(toSplit);
+
+				coordinates.HydrothermalVentsCoordinates.Add(new Vector2D[] {from2D, to2D});
+
+				
+				if (from2D.x < coordinates.MinCoordinates.x)
+					coordinates.MinCoordinates.x = from2D.x;
+				if (from2D.x > coordinates.MaxCoordinates.x)
+					coordinates.MaxCoordinates.x = from2D.x;
+
+				if (from2D.y < coordinates.MinCoordinates.y)
+					coordinates.MinCoordinates.y = from2D.y;
+				if (from2D.y > coordinates.MaxCoordinates.y)
+					coordinates.MaxCoordinates.y = from2D.y;
+
+				if (to2D.x < coordinates.MinCoordinates.x)
+					coordinates.MinCoordinates.x = to2D.x;
+				if (to2D.x > coordinates.MaxCoordinates.x)
+					coordinates.MaxCoordinates.x = to2D.x;
+
+				if (to2D.y < coordinates.MinCoordinates.y)
+					coordinates.MinCoordinates.y = to2D.y;
+				if (to2D.y > coordinates.MaxCoordinates.y)
+					coordinates.MaxCoordinates.y = to2D.y;
+			}
+
+			return coordinates;
+		}
+
+		private static Vector2D GetCoordinate(List<string> coordinateString)
+		{
+			Vector2D from2D = new Vector2D();
+			if (int.TryParse(coordinateString[0], out int fromX) && int.TryParse(coordinateString[1], out int fromY))
+			{
+				from2D = new Vector2D() {x = fromX, y = fromY};
+			}
+			return from2D;
 		}
 	}
 
