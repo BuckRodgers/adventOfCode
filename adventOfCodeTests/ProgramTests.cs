@@ -128,7 +128,7 @@ namespace adventOfCode.Tests
 		public void PlayBingoTest()
 		{
 			int playBingo = Program.PlayBingo(input4);
-			if(playBingo != 4512)
+			if(playBingo != 1924)
 				Assert.Fail();
 		}
 	}

@@ -322,6 +322,12 @@ namespace adventOfCode
 
 			List<List<bool[]>> results = GetBlanks(tables);
 
+			List<int> remainingTablesToWin = new List<int>();
+			for (int i = 0; i < tables.Count; i++)
+			{
+				remainingTablesToWin.Add(i);
+			}
+
 			foreach (int randomNumber in randomNumbers)
 			{
 				for (var tableIndex = 0; tableIndex < tables.Count; tableIndex++)
@@ -332,28 +338,31 @@ namespace adventOfCode
 					for (var i = 0; i < board.Count; i++)
 					{
 						int[] row = board[i];
-						
+
 						for (int j = 0; j < row.Length; j++)
 						{
 							if (row[j] != randomNumber) continue;
 
 							markedTable[i][j] = true;
-							if (RowIsComplete(markedTable, j))
-							{
-								var unMarkedNumbersSum = GetUnmarkedNumbersSum(markedTable, board);
-								return unMarkedNumbersSum * randomNumber;
-							}
-							else if (ColumnIsComplete(markedTable, i))
-							{
-								var unMarkedNumbersSum = GetUnmarkedNumbersSum(markedTable, board);
-								return unMarkedNumbersSum * randomNumber;
-							}
+							if (!BoardHasWon(markedTable, j, i)) continue;
+							remainingTablesToWin.Remove(tableIndex);
+							
+							if(remainingTablesToWin.Any()) continue;
+
+							int unMarkedNumbersSum = GetUnmarkedNumbersSum(markedTable, board);
+							return unMarkedNumbersSum * randomNumber;
 						}
 					}
 				}
+				
 			}
 
 			return 0;
+		}
+
+		private static bool BoardHasWon(List<bool[]> markedTable, int j, int i)
+		{
+			return RowIsComplete(markedTable, j) || ColumnIsComplete(markedTable[i]);
 		}
 
 		public static int GetUnmarkedNumbersSum(List<bool[]> markedTable, List<int[]> board)
@@ -371,9 +380,24 @@ namespace adventOfCode
 			return sum;
 		}
 
-		private static bool ColumnIsComplete(List<bool[]> results, int i)
+		public static bool BoardHasWon(List<bool[]> markedTable)
 		{
-			return results[i].All(o => o);
+			foreach (bool[] mark in markedTable)
+			{
+				if (ColumnIsComplete(mark))
+					return true;
+				for (var j = 0; j < mark.Length; j++)
+				{
+					if (RowIsComplete(markedTable, j))
+						return true;
+				}
+			}
+			return false;
+		}
+
+		private static bool ColumnIsComplete(bool[] markedRow)
+		{
+			return markedRow.All(o => o);
 		}
 
 		private static bool RowIsComplete(List<bool[]> results, int j)
