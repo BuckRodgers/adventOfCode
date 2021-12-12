@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -12,7 +13,8 @@ namespace adventOfCode
 		{
 			//Day1();
 			//Day2();
-			Day3();
+			//Day3();
+			Day4();
 		}
 
 		public static void Day1()
@@ -219,6 +221,7 @@ namespace adventOfCode
 
 		}
 
+
 		public static int GetOxygenGeneratorRating(List<string> lines)
 		{
 			int mostCommonBitsLength = GetMostCommonBits(lines).Length;
@@ -301,5 +304,140 @@ namespace adventOfCode
 
 			return result;
 		}
+
+		public static void Day4()
+		{
+			var lines = File.ReadAllLines(@"C:\Users\rjl\Documents\adventofcode\input4.txt").ToList();
+			int increasesCount = PlayBingo(lines);
+			Console.WriteLine(increasesCount);
+		}
+
+		public static int PlayBingo(List<string> lines)
+		{
+			int[] randomNumbers = GetRandomeNumbers(lines);
+			if (randomNumbers == null) return 0;
+			if (!randomNumbers.Any()) return 0;
+			lines.RemoveAt(0);
+			List<List<int[]>> tables = GetTables(lines);
+
+			List<List<bool[]>> results = GetBlanks(tables);
+
+			foreach (int randomNumber in randomNumbers)
+			{
+				for (var tableIndex = 0; tableIndex < tables.Count; tableIndex++)
+				{
+					List<int[]> board = tables[tableIndex];
+					List<bool[]> markedTable = results[tableIndex];
+
+					for (var i = 0; i < board.Count; i++)
+					{
+						int[] row = board[i];
+						
+						for (int j = 0; j < row.Length; j++)
+						{
+							if (row[j] != randomNumber) continue;
+
+							markedTable[i][j] = true;
+							if (RowIsComplete(markedTable, j))
+							{
+								var unMarkedNumbersSum = GetUnmarkedNumbersSum(markedTable, board);
+								return unMarkedNumbersSum * randomNumber;
+							}
+							else if (ColumnIsComplete(markedTable, i))
+							{
+								var unMarkedNumbersSum = GetUnmarkedNumbersSum(markedTable, board);
+								return unMarkedNumbersSum * randomNumber;
+							}
+						}
+					}
+				}
+			}
+
+			return 0;
+		}
+
+		public static int GetUnmarkedNumbersSum(List<bool[]> markedTable, List<int[]> board)
+		{
+			var sum = 0;
+			for (int i = 0; i < board.Count; i++)
+			{
+				for (int j = 0; j < board[i].Length; j++)
+				{
+					if (!markedTable[i][j])
+						sum += board[i][j];
+				}
+			}
+
+			return sum;
+		}
+
+		private static bool ColumnIsComplete(List<bool[]> results, int i)
+		{
+			return results[i].All(o => o);
+		}
+
+		private static bool RowIsComplete(List<bool[]> results, int j)
+		{
+			return results.All(o => o[j]);
+		}
+
+		private static List<List<bool[]>> GetBlanks(List<List<int[]>> tables)
+		{
+			List<List<bool[]>> blankTables = new List<List<bool[]>>();
+			foreach (List<int[]> table in tables)
+			{
+				var columns = table.First().Length;
+				var rows = table.Count;
+				List<bool[]> blankTable = new List<bool[]>(rows);
+				for (int i = 0; i < rows; i++)
+				{
+					blankTable.Add(new bool[columns]);	
+				}
+				blankTables.Add(blankTable);
+
+			}
+
+			return blankTables;
+		}
+
+		private static List<List<int[]>> GetTables(List<string> tableLines)
+		{
+			List<List<int[]>> tables = new List<List<int[]>>();
+			List<int[]> table = new List<int[]>();
+			foreach (string tableLine in tableLines)
+			{
+				if (string.IsNullOrWhiteSpace(tableLine))
+				{
+					if (table.Any())
+					{
+						tables.Add(table.ToList());
+						table = new List<int[]>();
+						
+					}
+					continue;
+
+				}
+
+				string[] strings = tableLine.Trim().Split(' ').Where(o=>!string.IsNullOrWhiteSpace(o)).ToArray();
+				int[] lineSplit = strings.Select(int.Parse).ToArray();
+				table.Add(lineSplit);
+			}
+			if (table.Any())
+			{
+				tables.Add(table.ToList());
+			}
+
+			return tables;
+		}
+
+		private static int[] GetRandomeNumbers(List<string> lines)
+		{
+			string firstLine = lines.FirstOrDefault(o => !string.IsNullOrEmpty(o.Trim()));
+			if (firstLine == null) return new int[0];
+			string[] strings = firstLine.Split(',');
+			return strings.Select(int.Parse).ToArray();
+		}
 	}
+
+
 }
