@@ -13,7 +13,7 @@ namespace adventOfCode.Tests
 		public void SlidingWindowTest()
 		{
 			List<string> lines = new List<string>() { "199", "200", "208", "210", "200", "207", "240", "269", "260", "263" };
-			var result = Program.SlidingWindow(lines);
+			var result = Day1Challenge.SlidingWindow(lines);
 			if (result != 5)
 				Assert.Fail();
 		}
@@ -28,7 +28,7 @@ namespace adventOfCode.Tests
 				"up 3",
 				"down 8	 ",
 				"forward 2",};
-			var result = Program.ProductOfHorizontalAndDepthPosition(lines);
+			var result = Day2Challenge.ProductOfHorizontalAndDepthPosition(lines);
 			if (result != 150)
 				Assert.Fail();
 		}
@@ -43,7 +43,7 @@ namespace adventOfCode.Tests
 				"up 3",
 				"down 8	 ",
 				"forward 2",};
-			var result = Program.ProductOfHorizontalAndDepthPositionWithAim(lines);
+			var result = Day2Challenge.ProductOfHorizontalAndDepthPositionWithAim(lines);
 			if (result != 900)
 				Assert.Fail();
 		}
@@ -52,7 +52,7 @@ namespace adventOfCode.Tests
 		public void GetGammaRate2Test()
 		{
 
-			if (Program.GetLifeSuppportRating(input3) != 230)
+			if (Day3Challenge.GetLifeSuppportRating(input3) != 230)
 				Assert.Fail();
 		}
 
@@ -60,7 +60,7 @@ namespace adventOfCode.Tests
 		public void GetGammaRateTest()
 		{
 
-			if (Program.getPowerConsumption(input3) != 198)
+			if (Day3Challenge.getPowerConsumption(input3) != 198)
 				Assert.Fail();
 		}
 
@@ -83,21 +83,21 @@ namespace adventOfCode.Tests
 		[TestMethod()]
 		public void GetLifeSuppportRatingTest()
 		{
-			if (Program.GetLifeSuppportRating(input3) != 230)
+			if (Day3Challenge.GetLifeSuppportRating(input3) != 230)
 				Assert.Fail();
 		}
 
 		[TestMethod()]
 		public void GetCo2RatingTest()
 		{
-			if (Program.GetCo2Rating(input3) != 10)
+			if (Day3Challenge.GetCo2Rating(input3) != 10)
 				Assert.Fail();
 		}
 
 		[TestMethod()]
 		public void GetOxygenGeneratorRatingTest()
 		{
-			if (Program.GetOxygenGeneratorRating(input3) != 23)
+			if (Day3Challenge.GetOxygenGeneratorRating(input3) != 23)
 				Assert.Fail();
 		}
 
@@ -127,7 +127,7 @@ namespace adventOfCode.Tests
 		[TestMethod()]
 		public void PlayBingoTest()
 		{
-			int playBingo = Program.PlayBingo(input4);
+			int playBingo = Day4Challenge.PlayBingo(input4);
 			if (playBingo != 1924)
 				Assert.Fail();
 		}
@@ -149,8 +149,8 @@ namespace adventOfCode.Tests
 		[TestMethod()]
 		public void GetNumberOfPointsWhereAtLeast2LinesOverLapTest()
 		{
-			var result = Program.GetNumberOfPointsWhereAtLeast2LinesOverLap(input5);
-			if(result!= 5)
+			var result = Day5Challenge.GetNumberOfPointsWhereAtLeast2LinesOverLap(input5);
+			if(result!= 12)
 				Assert.Fail();
 		}
 	}
