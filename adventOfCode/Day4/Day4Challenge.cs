@@ -7,7 +7,7 @@ namespace adventOfCode
 {
 	public class Day4Challenge
 	{
-		public static void Day4()
+		public static void Run()
 		{
 			var lines = File.ReadAllLines(@"C:\Users\rjl\Documents\adventofcode\input4.txt").ToList();
 			int result = PlayBingo(lines);

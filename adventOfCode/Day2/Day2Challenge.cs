@@ -7,7 +7,7 @@ namespace adventOfCode
 {
 	public class Day2Challenge
 	{
-		public static void Day2()
+		public static void Run()
 		{
 			var lines = File.ReadAllLines(@"C:\Users\rjl\Documents\adventofcode\input2.txt").ToList();
 			int result = ProductOfHorizontalAndDepthPosition(lines);

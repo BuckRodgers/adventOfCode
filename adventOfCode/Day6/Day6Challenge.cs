@@ -40,7 +40,6 @@ namespace adventOfCode
 				if (daysToBirth >= 0) return;
 				daysToBirth = 6;
 				SpawnNewFish();
-
 			}
 
 			private void SpawnNewFish()

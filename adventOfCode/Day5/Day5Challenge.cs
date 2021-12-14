@@ -9,7 +9,7 @@ namespace adventOfCode
 {
 	public class Day5Challenge
 	{
-		public static void Day5()
+		public static void Run()
 		{
 			var lines = File.ReadAllLines(@"C:\Users\rjl\Documents\adventofcode\input5.txt").ToList();
 			int increasesCount = GetNumberOfPointsWhereAtLeast2LinesOverLap(lines);

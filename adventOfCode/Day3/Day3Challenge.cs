@@ -7,7 +7,7 @@ namespace adventOfCode
 {
 	public class Day3Challenge
 	{
-		public static void Day3()
+		public static void Run()
 		{
 			var lines = File.ReadAllLines(@"C:\Users\rjl\Documents\adventofcode\input3.txt").ToList();
 			int result = GetLifeSuppportRating(lines);

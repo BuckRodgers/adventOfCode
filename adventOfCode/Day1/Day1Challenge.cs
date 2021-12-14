@@ -7,9 +7,9 @@ namespace adventOfCode
 {
 	public class Day1Challenge
 	{
-		public static void Day1()
+		public static void Run()
 		{
-			var lines = File.ReadAllLines(@"C:\Users\rjl\Documents\adventofcode\input.txt").ToList();
+			var lines = File.ReadAllLines(@"C:\Users\rjl\source\repos\adventOfCode\adventOfCode\Day1\input.txt").ToList();
 			int increasesCount = SlidingWindow(lines);
 			Console.WriteLine(increasesCount);
 		}
