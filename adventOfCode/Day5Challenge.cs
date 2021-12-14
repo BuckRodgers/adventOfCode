@@ -16,24 +16,6 @@ namespace adventOfCode
 			Console.WriteLine(increasesCount);
 		}
 
-		//class Vector2D
-		//{
-		//	public Vector2 v = new Vector2();
-		//	public int x
-		//	{
-		//		get => (int) v.X;
-		//		set => v.X = value;
-		//	}
-			
-		//	public int y
-		//	{
-		//		get => (int) v.Y;
-		//		set => v.Y = value;
-		//	}
-
-		//	//public int x, y;
-		//}
-
 		class HydroThermalVentsCoordinates
 		{
 			public Vector2 MinCoordinates = new Vector2(){X = int.MaxValue, Y= int.MaxValue};

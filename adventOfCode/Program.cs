@@ -13,7 +13,9 @@ namespace adventOfCode
 			//Day3();
 			//Day4();
 			
-			Day5Challenge.Day5();
+			//Day5Challenge.Day5();
+			Day6Challenge.Run();
+			
 		}
 
 		
